@@ -11,8 +11,8 @@
   DTS:LocaleID="13322"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionBuild="62"
-  DTS:VersionGUID="{3FE1F179-5934-4F9C-A06A-54E4AA307F04}">
+  DTS:VersionBuild="69"
+  DTS:VersionGUID="{A4E2F560-FC90-4E6B-99DB-957DC948BC5B}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
@@ -8743,8 +8743,10 @@ where [refTable].[fecha] = ?</property>
                       lineageId="Package\ETL_FACT_VENTA\UNION_VENTA_TIEMPO.Outputs[Merge Join Output].Columns[cantidad]" />
                     <inputColumn
                       refId="Package\ETL_FACT_VENTA\LOAD_TO_FACT_VENTA.Inputs[OLE DB Destination Input].Columns[PRECIO_TOTAL]"
-                      cachedDataType="i4"
+                      cachedDataType="numeric"
                       cachedName="PRECIO_TOTAL"
+                      cachedPrecision="24"
+                      cachedScale="2"
                       externalMetadataColumnId="Package\ETL_FACT_VENTA\LOAD_TO_FACT_VENTA.Inputs[OLE DB Destination Input].ExternalColumns[precio_total]"
                       lineageId="Package\ETL_FACT_VENTA\UNION_VENTA_TIEMPO.Outputs[Merge Join Output].Columns[PRECIO_TOTAL]" />
                     <inputColumn
@@ -8900,6 +8902,13 @@ where [refTable].[fecha] = ?</property>
                       cachedDataType="i4"
                       cachedName="cantidad"
                       lineageId="Package\ETL_FACT_VENTA\EXTRACT_FROM_DETALLE_VENTA.Outputs[OLE DB Source Output].Columns[cantidad]" />
+                    <inputColumn
+                      refId="Package\ETL_FACT_VENTA\OBTENER_PRECIO_TOTAL.Inputs[Derived Column Input].Columns[descuento]"
+                      cachedDataType="numeric"
+                      cachedName="descuento"
+                      cachedPrecision="5"
+                      cachedScale="2"
+                      lineageId="Package\ETL_FACT_VENTA\EXTRACT_FROM_DETALLE_VENTA.Outputs[OLE DB Source Output].Columns[descuento]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -8914,24 +8923,26 @@ where [refTable].[fecha] = ?</property>
                   <outputColumns>
                     <outputColumn
                       refId="Package\ETL_FACT_VENTA\OBTENER_PRECIO_TOTAL.Outputs[Derived Column Output].Columns[PRECIO_TOTAL]"
-                      dataType="i4"
+                      dataType="numeric"
                       errorOrTruncationOperation="Computation"
                       errorRowDisposition="FailComponent"
                       lineageId="Package\ETL_FACT_VENTA\OBTENER_PRECIO_TOTAL.Outputs[Derived Column Output].Columns[PRECIO_TOTAL]"
                       name="PRECIO_TOTAL"
+                      precision="24"
+                      scale="2"
                       truncationRowDisposition="FailComponent">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Expression"
-                          name="Expression">#{Package\ETL_FACT_VENTA\EXTRACT_FROM_DETALLE_VENTA.Outputs[OLE DB Source Output].Columns[precio_unitario]} * #{Package\ETL_FACT_VENTA\EXTRACT_FROM_DETALLE_VENTA.Outputs[OLE DB Source Output].Columns[cantidad]}</property>
+                          name="Expression">[ROUND](#{Package\ETL_FACT_VENTA\EXTRACT_FROM_DETALLE_VENTA.Outputs[OLE DB Source Output].Columns[precio_unitario]} * #{Package\ETL_FACT_VENTA\EXTRACT_FROM_DETALLE_VENTA.Outputs[OLE DB Source Output].Columns[cantidad]} * (1 - #{Package\ETL_FACT_VENTA\EXTRACT_FROM_DETALLE_VENTA.Outputs[OLE DB Source Output].Columns[descuento]}),18)</property>
                         <property
                           containsID="true"
                           dataType="System.String"
                           description="Derived Column Friendly Expression"
                           expressionType="Notify"
-                          name="FriendlyExpression">precio_unitario * cantidad</property>
+                          name="FriendlyExpression">ROUND(precio_unitario * cantidad * (1 - descuento),18)</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -9172,8 +9183,10 @@ where [refTable].[fecha] = ?</property>
                     </inputColumn>
                     <inputColumn
                       refId="Package\ETL_FACT_VENTA\ORDENAR_POR_FECHA.Inputs[Sort Input].Columns[PRECIO_TOTAL]"
-                      cachedDataType="i4"
+                      cachedDataType="numeric"
                       cachedName="PRECIO_TOTAL"
+                      cachedPrecision="24"
+                      cachedScale="2"
                       lineageId="Package\ETL_FACT_VENTA\UNION_VENTA_PRODUCTO.Outputs[Merge Join Output].Columns[PRECIO_TOTAL]">
                       <properties>
                         <property
@@ -9354,9 +9367,11 @@ where [refTable].[fecha] = ?</property>
                     </outputColumn>
                     <outputColumn
                       refId="Package\ETL_FACT_VENTA\ORDENAR_POR_FECHA.Outputs[Sort Output].Columns[PRECIO_TOTAL]"
-                      dataType="i4"
+                      dataType="numeric"
                       lineageId="Package\ETL_FACT_VENTA\ORDENAR_POR_FECHA.Outputs[Sort Output].Columns[PRECIO_TOTAL]"
-                      name="PRECIO_TOTAL">
+                      name="PRECIO_TOTAL"
+                      precision="24"
+                      scale="2">
                       <properties>
                         <property
                           containsID="true"
@@ -9597,8 +9612,10 @@ where [refTable].[fecha] = ?</property>
                     </inputColumn>
                     <inputColumn
                       refId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_CLIENTE.Inputs[Sort Input].Columns[PRECIO_TOTAL]"
-                      cachedDataType="i4"
+                      cachedDataType="numeric"
                       cachedName="PRECIO_TOTAL"
+                      cachedPrecision="24"
+                      cachedScale="2"
                       lineageId="Package\ETL_FACT_VENTA\UNION_VENTA_EMPLEADO.Outputs[Merge Join Output].Columns[PRECIO_TOTAL]">
                       <properties>
                         <property
@@ -9782,9 +9799,11 @@ where [refTable].[fecha] = ?</property>
                     </outputColumn>
                     <outputColumn
                       refId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_CLIENTE.Outputs[Sort Output].Columns[PRECIO_TOTAL]"
-                      dataType="i4"
+                      dataType="numeric"
                       lineageId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_CLIENTE.Outputs[Sort Output].Columns[PRECIO_TOTAL]"
-                      name="PRECIO_TOTAL">
+                      name="PRECIO_TOTAL"
+                      precision="24"
+                      scale="2">
                       <properties>
                         <property
                           containsID="true"
@@ -9966,8 +9985,10 @@ where [refTable].[fecha] = ?</property>
                     </inputColumn>
                     <inputColumn
                       refId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_PRODUCTO.Inputs[Sort Input].Columns[PRECIO_TOTAL]"
-                      cachedDataType="i4"
+                      cachedDataType="numeric"
                       cachedName="PRECIO_TOTAL"
+                      cachedPrecision="24"
+                      cachedScale="2"
                       lineageId="Package\ETL_FACT_VENTA\UNION_VENTA_SUCURSAL.Outputs[Merge Join Output].Columns[PRECIO_TOTAL]">
                       <properties>
                         <property
@@ -10152,9 +10173,11 @@ where [refTable].[fecha] = ?</property>
                     </outputColumn>
                     <outputColumn
                       refId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_PRODUCTO.Outputs[Sort Output].Columns[PRECIO_TOTAL]"
-                      dataType="i4"
+                      dataType="numeric"
                       lineageId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_PRODUCTO.Outputs[Sort Output].Columns[PRECIO_TOTAL]"
-                      name="PRECIO_TOTAL">
+                      name="PRECIO_TOTAL"
+                      precision="24"
+                      scale="2">
                       <properties>
                         <property
                           containsID="true"
@@ -10335,8 +10358,10 @@ where [refTable].[fecha] = ?</property>
                     </inputColumn>
                     <inputColumn
                       refId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_SUCURSAL.Inputs[Sort Input].Columns[PRECIO_TOTAL]"
-                      cachedDataType="i4"
+                      cachedDataType="numeric"
                       cachedName="PRECIO_TOTAL"
+                      cachedPrecision="24"
+                      cachedScale="2"
                       lineageId="Package\ETL_FACT_VENTA\UNION_VENTA_CLIENTE.Outputs[Merge Join Output].Columns[PRECIO_TOTAL]">
                       <properties>
                         <property
@@ -10521,9 +10546,11 @@ where [refTable].[fecha] = ?</property>
                     </outputColumn>
                     <outputColumn
                       refId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_SUCURSAL.Outputs[Sort Output].Columns[PRECIO_TOTAL]"
-                      dataType="i4"
+                      dataType="numeric"
                       lineageId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_SUCURSAL.Outputs[Sort Output].Columns[PRECIO_TOTAL]"
-                      name="PRECIO_TOTAL">
+                      name="PRECIO_TOTAL"
+                      precision="24"
+                      scale="2">
                       <properties>
                         <property
                           containsID="true"
@@ -10877,8 +10904,10 @@ where [refTable].[fecha] = ?</property>
                     </inputColumn>
                     <inputColumn
                       refId="Package\ETL_FACT_VENTA\ORDENAR_POR_VENDEDOR_ID.Inputs[Sort Input].Columns[PRECIO_TOTAL]"
-                      cachedDataType="i4"
+                      cachedDataType="numeric"
                       cachedName="PRECIO_TOTAL"
+                      cachedPrecision="24"
+                      cachedScale="2"
                       lineageId="Package\ETL_FACT_VENTA\UNION_VENTA_DETALLE.Outputs[Merge Join Output].Columns[PRECIO_TOTAL]">
                       <properties>
                         <property
@@ -11073,9 +11102,11 @@ where [refTable].[fecha] = ?</property>
                     </outputColumn>
                     <outputColumn
                       refId="Package\ETL_FACT_VENTA\ORDENAR_POR_VENDEDOR_ID.Outputs[Sort Output].Columns[PRECIO_TOTAL]"
-                      dataType="i4"
+                      dataType="numeric"
                       lineageId="Package\ETL_FACT_VENTA\ORDENAR_POR_VENDEDOR_ID.Outputs[Sort Output].Columns[PRECIO_TOTAL]"
-                      name="PRECIO_TOTAL">
+                      name="PRECIO_TOTAL"
+                      precision="24"
+                      scale="2">
                       <properties>
                         <property
                           containsID="true"
@@ -11552,8 +11583,10 @@ where [refTable].[fecha] = ?</property>
                     </inputColumn>
                     <inputColumn
                       refId="Package\ETL_FACT_VENTA\ORDEN_VENTA_ID.Inputs[Sort Input].Columns[PRECIO_TOTAL]"
-                      cachedDataType="i4"
+                      cachedDataType="numeric"
                       cachedName="PRECIO_TOTAL"
+                      cachedPrecision="24"
+                      cachedScale="2"
                       lineageId="Package\ETL_FACT_VENTA\OBTENER_PRECIO_TOTAL.Outputs[Derived Column Output].Columns[PRECIO_TOTAL]">
                       <properties>
                         <property
@@ -11649,9 +11682,11 @@ where [refTable].[fecha] = ?</property>
                     </outputColumn>
                     <outputColumn
                       refId="Package\ETL_FACT_VENTA\ORDEN_VENTA_ID.Outputs[Sort Output].Columns[PRECIO_TOTAL]"
-                      dataType="i4"
+                      dataType="numeric"
                       lineageId="Package\ETL_FACT_VENTA\ORDEN_VENTA_ID.Outputs[Sort Output].Columns[PRECIO_TOTAL]"
-                      name="PRECIO_TOTAL">
+                      name="PRECIO_TOTAL"
+                      precision="24"
+                      scale="2">
                       <properties>
                         <property
                           containsID="true"
@@ -11915,8 +11950,10 @@ where [refTable].[fecha] = ?</property>
                       lineageId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_CLIENTE.Outputs[Sort Output].Columns[cantidad]" />
                     <inputColumn
                       refId="Package\ETL_FACT_VENTA\UNION_VENTA_CLIENTE.Inputs[Merge Join Left Input].Columns[PRECIO_TOTAL]"
-                      cachedDataType="i4"
+                      cachedDataType="numeric"
                       cachedName="PRECIO_TOTAL"
+                      cachedPrecision="24"
+                      cachedScale="2"
                       lineageId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_CLIENTE.Outputs[Sort Output].Columns[PRECIO_TOTAL]" />
                     <inputColumn
                       refId="Package\ETL_FACT_VENTA\UNION_VENTA_CLIENTE.Inputs[Merge Join Left Input].Columns[descuento]"
@@ -12011,9 +12048,11 @@ where [refTable].[fecha] = ?</property>
                     </outputColumn>
                     <outputColumn
                       refId="Package\ETL_FACT_VENTA\UNION_VENTA_CLIENTE.Outputs[Merge Join Output].Columns[PRECIO_TOTAL]"
-                      dataType="i4"
+                      dataType="numeric"
                       lineageId="Package\ETL_FACT_VENTA\UNION_VENTA_CLIENTE.Outputs[Merge Join Output].Columns[PRECIO_TOTAL]"
-                      name="PRECIO_TOTAL">
+                      name="PRECIO_TOTAL"
+                      precision="24"
+                      scale="2">
                       <properties>
                         <property
                           containsID="true"
@@ -12237,8 +12276,10 @@ where [refTable].[fecha] = ?</property>
                       lineageId="Package\ETL_FACT_VENTA\ORDEN_VENTA_ID.Outputs[Sort Output].Columns[descuento]" />
                     <inputColumn
                       refId="Package\ETL_FACT_VENTA\UNION_VENTA_DETALLE.Inputs[Merge Join Right Input].Columns[PRECIO_TOTAL]"
-                      cachedDataType="i4"
+                      cachedDataType="numeric"
                       cachedName="PRECIO_TOTAL"
+                      cachedPrecision="24"
+                      cachedScale="2"
                       lineageId="Package\ETL_FACT_VENTA\ORDEN_VENTA_ID.Outputs[Sort Output].Columns[PRECIO_TOTAL]" />
                     <inputColumn
                       refId="Package\ETL_FACT_VENTA\UNION_VENTA_DETALLE.Inputs[Merge Join Right Input].Columns[cantidad]"
@@ -12323,9 +12364,11 @@ where [refTable].[fecha] = ?</property>
                     </outputColumn>
                     <outputColumn
                       refId="Package\ETL_FACT_VENTA\UNION_VENTA_DETALLE.Outputs[Merge Join Output].Columns[PRECIO_TOTAL]"
-                      dataType="i4"
+                      dataType="numeric"
                       lineageId="Package\ETL_FACT_VENTA\UNION_VENTA_DETALLE.Outputs[Merge Join Output].Columns[PRECIO_TOTAL]"
-                      name="PRECIO_TOTAL">
+                      name="PRECIO_TOTAL"
+                      precision="24"
+                      scale="2">
                       <properties>
                         <property
                           containsID="true"
@@ -12476,8 +12519,10 @@ where [refTable].[fecha] = ?</property>
                       lineageId="Package\ETL_FACT_VENTA\ORDENAR_POR_VENDEDOR_ID.Outputs[Sort Output].Columns[cantidad]" />
                     <inputColumn
                       refId="Package\ETL_FACT_VENTA\UNION_VENTA_EMPLEADO.Inputs[Merge Join Left Input].Columns[PRECIO_TOTAL]"
-                      cachedDataType="i4"
+                      cachedDataType="numeric"
                       cachedName="PRECIO_TOTAL"
+                      cachedPrecision="24"
+                      cachedScale="2"
                       lineageId="Package\ETL_FACT_VENTA\ORDENAR_POR_VENDEDOR_ID.Outputs[Sort Output].Columns[PRECIO_TOTAL]" />
                     <inputColumn
                       refId="Package\ETL_FACT_VENTA\UNION_VENTA_EMPLEADO.Inputs[Merge Join Left Input].Columns[descuento]"
@@ -12577,9 +12622,11 @@ where [refTable].[fecha] = ?</property>
                     </outputColumn>
                     <outputColumn
                       refId="Package\ETL_FACT_VENTA\UNION_VENTA_EMPLEADO.Outputs[Merge Join Output].Columns[PRECIO_TOTAL]"
-                      dataType="i4"
+                      dataType="numeric"
                       lineageId="Package\ETL_FACT_VENTA\UNION_VENTA_EMPLEADO.Outputs[Merge Join Output].Columns[PRECIO_TOTAL]"
-                      name="PRECIO_TOTAL">
+                      name="PRECIO_TOTAL"
+                      precision="24"
+                      scale="2">
                       <properties>
                         <property
                           containsID="true"
@@ -12752,8 +12799,10 @@ where [refTable].[fecha] = ?</property>
                       lineageId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_PRODUCTO.Outputs[Sort Output].Columns[cantidad]" />
                     <inputColumn
                       refId="Package\ETL_FACT_VENTA\UNION_VENTA_PRODUCTO.Inputs[Merge Join Left Input].Columns[PRECIO_TOTAL]"
-                      cachedDataType="i4"
+                      cachedDataType="numeric"
                       cachedName="PRECIO_TOTAL"
+                      cachedPrecision="24"
+                      cachedScale="2"
                       lineageId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_PRODUCTO.Outputs[Sort Output].Columns[PRECIO_TOTAL]" />
                     <inputColumn
                       refId="Package\ETL_FACT_VENTA\UNION_VENTA_PRODUCTO.Inputs[Merge Join Left Input].Columns[sucursal_id]"
@@ -12861,9 +12910,11 @@ where [refTable].[fecha] = ?</property>
                     </outputColumn>
                     <outputColumn
                       refId="Package\ETL_FACT_VENTA\UNION_VENTA_PRODUCTO.Outputs[Merge Join Output].Columns[PRECIO_TOTAL]"
-                      dataType="i4"
+                      dataType="numeric"
                       lineageId="Package\ETL_FACT_VENTA\UNION_VENTA_PRODUCTO.Outputs[Merge Join Output].Columns[PRECIO_TOTAL]"
-                      name="PRECIO_TOTAL">
+                      name="PRECIO_TOTAL"
+                      precision="24"
+                      scale="2">
                       <properties>
                         <property
                           containsID="true"
@@ -13023,8 +13074,10 @@ where [refTable].[fecha] = ?</property>
                       lineageId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_SUCURSAL.Outputs[Sort Output].Columns[cantidad]" />
                     <inputColumn
                       refId="Package\ETL_FACT_VENTA\UNION_VENTA_SUCURSAL.Inputs[Merge Join Left Input].Columns[PRECIO_TOTAL]"
-                      cachedDataType="i4"
+                      cachedDataType="numeric"
                       cachedName="PRECIO_TOTAL"
+                      cachedPrecision="24"
+                      cachedScale="2"
                       lineageId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_SUCURSAL.Outputs[Sort Output].Columns[PRECIO_TOTAL]" />
                     <inputColumn
                       refId="Package\ETL_FACT_VENTA\UNION_VENTA_SUCURSAL.Inputs[Merge Join Left Input].Columns[descuento]"
@@ -13118,9 +13171,11 @@ where [refTable].[fecha] = ?</property>
                     </outputColumn>
                     <outputColumn
                       refId="Package\ETL_FACT_VENTA\UNION_VENTA_SUCURSAL.Outputs[Merge Join Output].Columns[PRECIO_TOTAL]"
-                      dataType="i4"
+                      dataType="numeric"
                       lineageId="Package\ETL_FACT_VENTA\UNION_VENTA_SUCURSAL.Outputs[Merge Join Output].Columns[PRECIO_TOTAL]"
-                      name="PRECIO_TOTAL">
+                      name="PRECIO_TOTAL"
+                      precision="24"
+                      scale="2">
                       <properties>
                         <property
                           containsID="true"
@@ -13300,8 +13355,10 @@ where [refTable].[fecha] = ?</property>
                       lineageId="Package\ETL_FACT_VENTA\ORDENAR_POR_FECHA.Outputs[Sort Output].Columns[cantidad]" />
                     <inputColumn
                       refId="Package\ETL_FACT_VENTA\UNION_VENTA_TIEMPO.Inputs[Merge Join Left Input].Columns[PRECIO_TOTAL]"
-                      cachedDataType="i4"
+                      cachedDataType="numeric"
                       cachedName="PRECIO_TOTAL"
+                      cachedPrecision="24"
+                      cachedScale="2"
                       lineageId="Package\ETL_FACT_VENTA\ORDENAR_POR_FECHA.Outputs[Sort Output].Columns[PRECIO_TOTAL]" />
                     <inputColumn
                       refId="Package\ETL_FACT_VENTA\UNION_VENTA_TIEMPO.Inputs[Merge Join Left Input].Columns[sucursal_id]"
@@ -13404,9 +13461,11 @@ where [refTable].[fecha] = ?</property>
                     </outputColumn>
                     <outputColumn
                       refId="Package\ETL_FACT_VENTA\UNION_VENTA_TIEMPO.Outputs[Merge Join Output].Columns[PRECIO_TOTAL]"
-                      dataType="i4"
+                      dataType="numeric"
                       lineageId="Package\ETL_FACT_VENTA\UNION_VENTA_TIEMPO.Outputs[Merge Join Output].Columns[PRECIO_TOTAL]"
-                      name="PRECIO_TOTAL">
+                      name="PRECIO_TOTAL"
+                      precision="24"
+                      scale="2">
                       <properties>
                         <property
                           containsID="true"
@@ -13770,124 +13829,124 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
               startId="Package\ETL_FACT_VENTA\VERIFICAR_NO_SIBREESCRITURA.Outputs[Lookup No Match Output]" />
             <path
               refId="Package\ETL_FACT_VENTA.Paths[Merge Join Output5]"
-              endId="Package\ETL_FACT_VENTA\VERIFICAR_NO_SIBREESCRITURA.Inputs[Lookup Input]"
-              name="Merge Join Output"
-              startId="Package\ETL_FACT_VENTA\UNION_VENTA_TIEMPO.Outputs[Merge Join Output]" />
-            <path
-              refId="Package\ETL_FACT_VENTA.Paths[Merge Join Output4]"
-              endId="Package\ETL_FACT_VENTA\ORDENAR_POR_FECHA.Inputs[Sort Input]"
-              name="Merge Join Output"
-              startId="Package\ETL_FACT_VENTA\UNION_VENTA_PRODUCTO.Outputs[Merge Join Output]" />
-            <path
-              refId="Package\ETL_FACT_VENTA.Paths[Merge Join Output3]"
-              endId="Package\ETL_FACT_VENTA\ORDENAR_POR_VENDEDOR_ID.Inputs[Sort Input]"
-              name="Merge Join Output"
-              startId="Package\ETL_FACT_VENTA\UNION_VENTA_DETALLE.Outputs[Merge Join Output]" />
-            <path
-              refId="Package\ETL_FACT_VENTA.Paths[Merge Join Output]"
-              endId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_PRODUCTO.Inputs[Sort Input]"
-              name="Merge Join Output"
-              startId="Package\ETL_FACT_VENTA\UNION_VENTA_SUCURSAL.Outputs[Merge Join Output]" />
-            <path
-              refId="Package\ETL_FACT_VENTA.Paths[Merge Join Output1]"
-              endId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_CLIENTE.Inputs[Sort Input]"
-              name="Merge Join Output"
-              startId="Package\ETL_FACT_VENTA\UNION_VENTA_EMPLEADO.Outputs[Merge Join Output]" />
-            <path
-              refId="Package\ETL_FACT_VENTA.Paths[Merge Join Output2]"
               endId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_SUCURSAL.Inputs[Sort Input]"
               name="Merge Join Output"
               startId="Package\ETL_FACT_VENTA\UNION_VENTA_CLIENTE.Outputs[Merge Join Output]" />
             <path
+              refId="Package\ETL_FACT_VENTA.Paths[Merge Join Output4]"
+              endId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_CLIENTE.Inputs[Sort Input]"
+              name="Merge Join Output"
+              startId="Package\ETL_FACT_VENTA\UNION_VENTA_EMPLEADO.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\ETL_FACT_VENTA.Paths[Merge Join Output3]"
+              endId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_PRODUCTO.Inputs[Sort Input]"
+              name="Merge Join Output"
+              startId="Package\ETL_FACT_VENTA\UNION_VENTA_SUCURSAL.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\ETL_FACT_VENTA.Paths[Merge Join Output]"
+              endId="Package\ETL_FACT_VENTA\VERIFICAR_NO_SIBREESCRITURA.Inputs[Lookup Input]"
+              name="Merge Join Output"
+              startId="Package\ETL_FACT_VENTA\UNION_VENTA_TIEMPO.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\ETL_FACT_VENTA.Paths[Merge Join Output1]"
+              endId="Package\ETL_FACT_VENTA\ORDENAR_POR_FECHA.Inputs[Sort Input]"
+              name="Merge Join Output"
+              startId="Package\ETL_FACT_VENTA\UNION_VENTA_PRODUCTO.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\ETL_FACT_VENTA.Paths[Merge Join Output2]"
+              endId="Package\ETL_FACT_VENTA\ORDENAR_POR_VENDEDOR_ID.Inputs[Sort Input]"
+              name="Merge Join Output"
+              startId="Package\ETL_FACT_VENTA\UNION_VENTA_DETALLE.Outputs[Merge Join Output]" />
+            <path
               refId="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output5]"
-              endId="Package\ETL_FACT_VENTA\ORDENAR_POR_FECHA_.Inputs[Sort Input]"
-              name="OLE DB Source Output"
-              startId="Package\ETL_FACT_VENTA\EXTRACT_FROM_DIM_TIEMPO.Outputs[OLE DB Source Output]" />
-            <path
-              refId="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output6]"
-              endId="Package\ETL_FACT_VENTA\EXTRACT_DD_MM_YYYY.Inputs[Derived Column Input]"
-              name="OLE DB Source Output"
-              startId="Package\ETL_FACT_VENTA\EXTRACT_FROM_VENTAS.Outputs[OLE DB Source Output]" />
-            <path
-              refId="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output4]"
-              endId="Package\ETL_FACT_VENTA\ORDENAR_POR_SUCURSAL_ID.Inputs[Sort Input]"
-              name="OLE DB Source Output"
-              startId="Package\ETL_FACT_VENTA\EXTRACT_FROM_DIM_SUCURSAL.Outputs[OLE DB Source Output]" />
-            <path
-              refId="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output2]"
-              endId="Package\ETL_FACT_VENTA\ORDENAR_POR_PRODUCTO_ID.Inputs[Sort Input]"
-              name="OLE DB Source Output"
-              startId="Package\ETL_FACT_VENTA\EXTRACT_FROM_DIM_PRODUCTO.Outputs[OLE DB Source Output]" />
-            <path
-              refId="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output1]"
-              endId="Package\ETL_FACT_VENTA\ORDENAR_POR_EMPLEADO_ID.Inputs[Sort Input]"
-              name="OLE DB Source Output"
-              startId="Package\ETL_FACT_VENTA\EXTRACT_FROM_DIM_EMPLEADO.Outputs[OLE DB Source Output]" />
-            <path
-              refId="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output]"
               endId="Package\ETL_FACT_VENTA\ORDENAR_POR_CLIENTE_ID.Inputs[Sort Input]"
               name="OLE DB Source Output"
               startId="Package\ETL_FACT_VENTA\EXTRACT_FROM_DIM_CLIENTE.Outputs[OLE DB Source Output]" />
             <path
-              refId="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output3]"
+              refId="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output6]"
               endId="Package\ETL_FACT_VENTA\OBTENER_PRECIO_TOTAL.Inputs[Derived Column Input]"
               name="OLE DB Source Output"
               startId="Package\ETL_FACT_VENTA\EXTRACT_FROM_DETALLE_VENTA.Outputs[OLE DB Source Output]" />
             <path
+              refId="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output4]"
+              endId="Package\ETL_FACT_VENTA\ORDENAR_POR_EMPLEADO_ID.Inputs[Sort Input]"
+              name="OLE DB Source Output"
+              startId="Package\ETL_FACT_VENTA\EXTRACT_FROM_DIM_EMPLEADO.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output2]"
+              endId="Package\ETL_FACT_VENTA\ORDENAR_POR_SUCURSAL_ID.Inputs[Sort Input]"
+              name="OLE DB Source Output"
+              startId="Package\ETL_FACT_VENTA\EXTRACT_FROM_DIM_SUCURSAL.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output1]"
+              endId="Package\ETL_FACT_VENTA\EXTRACT_DD_MM_YYYY.Inputs[Derived Column Input]"
+              name="OLE DB Source Output"
+              startId="Package\ETL_FACT_VENTA\EXTRACT_FROM_VENTAS.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output]"
+              endId="Package\ETL_FACT_VENTA\ORDENAR_POR_FECHA_.Inputs[Sort Input]"
+              name="OLE DB Source Output"
+              startId="Package\ETL_FACT_VENTA\EXTRACT_FROM_DIM_TIEMPO.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output3]"
+              endId="Package\ETL_FACT_VENTA\ORDENAR_POR_PRODUCTO_ID.Inputs[Sort Input]"
+              name="OLE DB Source Output"
+              startId="Package\ETL_FACT_VENTA\EXTRACT_FROM_DIM_PRODUCTO.Outputs[OLE DB Source Output]" />
+            <path
               refId="Package\ETL_FACT_VENTA.Paths[Sort Output10]"
+              endId="Package\ETL_FACT_VENTA\UNION_VENTA_PRODUCTO.Inputs[Merge Join Left Input]"
+              name="Sort Output"
+              startId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_PRODUCTO.Outputs[Sort Output]" />
+            <path
+              refId="Package\ETL_FACT_VENTA.Paths[Sort Output]"
               endId="Package\ETL_FACT_VENTA\UNION_VENTA_EMPLEADO.Inputs[Merge Join Right Input]"
               name="Sort Output"
               startId="Package\ETL_FACT_VENTA\ORDENAR_POR_EMPLEADO_ID.Outputs[Sort Output]" />
             <path
-              refId="Package\ETL_FACT_VENTA.Paths[Sort Output]"
+              refId="Package\ETL_FACT_VENTA.Paths[Sort Output1]"
               endId="Package\ETL_FACT_VENTA\UNION_VENTA_TIEMPO.Inputs[Merge Join Left Input]"
               name="Sort Output"
               startId="Package\ETL_FACT_VENTA\ORDENAR_POR_FECHA.Outputs[Sort Output]" />
             <path
-              refId="Package\ETL_FACT_VENTA.Paths[Sort Output1]"
+              refId="Package\ETL_FACT_VENTA.Paths[Sort Output2]"
               endId="Package\ETL_FACT_VENTA\UNION_VENTA_DETALLE.Inputs[Merge Join Right Input]"
               name="Sort Output"
               startId="Package\ETL_FACT_VENTA\ORDEN_VENTA_ID.Outputs[Sort Output]" />
             <path
-              refId="Package\ETL_FACT_VENTA.Paths[Sort Output2]"
+              refId="Package\ETL_FACT_VENTA.Paths[Sort Output3]"
               endId="Package\ETL_FACT_VENTA\UNION_VENTA_PRODUCTO.Inputs[Merge Join Right Input]"
               name="Sort Output"
               startId="Package\ETL_FACT_VENTA\ORDENAR_POR_PRODUCTO_ID.Outputs[Sort Output]" />
             <path
-              refId="Package\ETL_FACT_VENTA.Paths[Sort Output3]"
+              refId="Package\ETL_FACT_VENTA.Paths[Sort Output4]"
               endId="Package\ETL_FACT_VENTA\UNION_VENTA_EMPLEADO.Inputs[Merge Join Left Input]"
               name="Sort Output"
               startId="Package\ETL_FACT_VENTA\ORDENAR_POR_VENDEDOR_ID.Outputs[Sort Output]" />
             <path
-              refId="Package\ETL_FACT_VENTA.Paths[Sort Output4]"
+              refId="Package\ETL_FACT_VENTA.Paths[Sort Output5]"
               endId="Package\ETL_FACT_VENTA\UNION_VENTA_SUCURSAL.Inputs[Merge Join Right Input]"
               name="Sort Output"
               startId="Package\ETL_FACT_VENTA\ORDENAR_POR_SUCURSAL_ID.Outputs[Sort Output]" />
             <path
-              refId="Package\ETL_FACT_VENTA.Paths[Sort Output5]"
+              refId="Package\ETL_FACT_VENTA.Paths[Sort Output6]"
               endId="Package\ETL_FACT_VENTA\UNION_VENTA_SUCURSAL.Inputs[Merge Join Left Input]"
               name="Sort Output"
               startId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_SUCURSAL.Outputs[Sort Output]" />
             <path
-              refId="Package\ETL_FACT_VENTA.Paths[Sort Output6]"
+              refId="Package\ETL_FACT_VENTA.Paths[Sort Output7]"
               endId="Package\ETL_FACT_VENTA\UNION_VENTA_TIEMPO.Inputs[Merge Join Right Input]"
               name="Sort Output"
               startId="Package\ETL_FACT_VENTA\ORDENAR_POR_FECHA_.Outputs[Sort Output]" />
             <path
-              refId="Package\ETL_FACT_VENTA.Paths[Sort Output7]"
+              refId="Package\ETL_FACT_VENTA.Paths[Sort Output8]"
               endId="Package\ETL_FACT_VENTA\UNION_VENTA_CLIENTE.Inputs[Merge Join Right Input]"
               name="Sort Output"
               startId="Package\ETL_FACT_VENTA\ORDENAR_POR_CLIENTE_ID.Outputs[Sort Output]" />
             <path
-              refId="Package\ETL_FACT_VENTA.Paths[Sort Output8]"
+              refId="Package\ETL_FACT_VENTA.Paths[Sort Output9]"
               endId="Package\ETL_FACT_VENTA\UNION_VENTA_CLIENTE.Inputs[Merge Join Left Input]"
               name="Sort Output"
               startId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_CLIENTE.Outputs[Sort Output]" />
-            <path
-              refId="Package\ETL_FACT_VENTA.Paths[Sort Output9]"
-              endId="Package\ETL_FACT_VENTA\UNION_VENTA_PRODUCTO.Inputs[Merge Join Left Input]"
-              name="Sort Output"
-              startId="Package\ETL_FACT_VENTA\ORDENAR_POR_ID_PRODUCTO.Outputs[Sort Output]" />
             <path
               refId="Package\ETL_FACT_VENTA.Paths[Sort Output11]"
               endId="Package\ETL_FACT_VENTA\UNION_VENTA_DETALLE.Inputs[Merge Join Left Input]"
@@ -14515,13 +14574,13 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
           Id="Package\ETL_DIM_CLIENTE\INITCAP_FOR_ESTADO_CIVIL"
           TopLeft="975,34" />
         <NodeLayout
+          Size="251,42"
+          Id="Package\ETL_DIM_CLIENTE\NOMBRE_NVARCHAR_TO_VARCHAR"
+          TopLeft="576,34" />
+        <NodeLayout
           Size="245,42"
           Id="Package\ETL_DIM_CLIENTE\VERIFICAR_NO_SOBREESCRITURA"
           TopLeft="966,255" />
-        <NodeLayout
-          Size="176,42"
-          Id="Package\ETL_DIM_CLIENTE\SEXO_TO_VARCHAR"
-          TopLeft="633,159" />
         <NodeLayout
           Size="185,42"
           Id="Package\ETL_DIM_CLIENTE\CREATE_DESC_FECHA"
@@ -14531,25 +14590,25 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
           Id="Package\ETL_DIM_CLIENTE\EXTRACT_DD_MM_YYYY"
           TopLeft="39,159" />
         <NodeLayout
-          Size="251,42"
-          Id="Package\ETL_DIM_CLIENTE\NOMBRE_NVARCHAR_TO_VARCHAR"
-          TopLeft="576,34" />
-        <NodeLayout
           Size="238,42"
           Id="Package\ETL_DIM_CLIENTE\CONVERT_DESC_FECHA_TO_STR"
           TopLeft="638,255" />
-        <NodeLayout
-          Size="281,42"
-          Id="Package\ETL_DIM_CLIENTE\ESTADO_CIVIL_NVARCHAR_TO_VARCHAR"
-          TopLeft="948,159" />
         <NodeLayout
           Size="206,42"
           Id="Package\ETL_DIM_CLIENTE\TRASNFORM_DD_MM_STR"
           TopLeft="36,255" />
         <NodeLayout
+          Size="281,42"
+          Id="Package\ETL_DIM_CLIENTE\ESTADO_CIVIL_NVARCHAR_TO_VARCHAR"
+          TopLeft="948,159" />
+        <NodeLayout
           Size="178,42"
           Id="Package\ETL_DIM_CLIENTE\LOAD_TO_CLIENTES"
           TopLeft="1008,402" />
+        <NodeLayout
+          Size="176,42"
+          Id="Package\ETL_DIM_CLIENTE\SEXO_TO_VARCHAR"
+          TopLeft="633,159" />
         <NodeLayout
           Size="193,42"
           Id="Package\ETL_DIM_CLIENTE\CONCATENAR_NOMBRE"
@@ -14573,7 +14632,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -14631,7 +14692,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -14653,7 +14716,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -14675,7 +14740,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -14697,7 +14764,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -14719,7 +14788,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -14741,7 +14812,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -14763,7 +14836,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -14785,7 +14860,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -14807,7 +14884,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -14829,7 +14908,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -14890,13 +14971,13 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
       <GraphLayout
         Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="206,42"
-          Id="Package\ETL_DIM_EMPLEADO\TRASNFORM_DD_MM_STR"
-          TopLeft="50,186" />
-        <NodeLayout
           Size="238,42"
           Id="Package\ETL_DIM_EMPLEADO\CONVERT_DESC_FECHA_TO_STR"
           TopLeft="30,338" />
+        <NodeLayout
+          Size="167,42"
+          Id="Package\ETL_DIM_EMPLEADO\ORDEN_ID_CAT_2"
+          TopLeft="326.5,280.5" />
         <NodeLayout
           Size="221,42"
           Id="Package\ETL_DIM_EMPLEADO\EXTRACT_FROM_EMPLEADOS"
@@ -14905,6 +14986,10 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
           Size="207,42"
           Id="Package\ETL_DIM_EMPLEADO\INITCAP_NOMBRE_CARGO"
           TopLeft="303,100" />
+        <NodeLayout
+          Size="155,42"
+          Id="Package\ETL_DIM_EMPLEADO\ORDEN_ID_CAT"
+          TopLeft="70,414" />
         <NodeLayout
           Size="216,42"
           Id="Package\ETL_DIM_EMPLEADO\UNION_EMPLEADOS_CARGO"
@@ -14918,13 +15003,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
           Id="Package\ETL_DIM_EMPLEADO\EVITAR_SOBREESCRITURA"
           TopLeft="570.5,414.5" />
         <NodeLayout
-          Size="167,42"
-          Id="Package\ETL_DIM_EMPLEADO\ORDEN_ID_CAT_2"
-          TopLeft="326.5,280.5" />
-        <NodeLayout
-          Size="155,42"
-          Id="Package\ETL_DIM_EMPLEADO\ORDEN_ID_CAT"
-          TopLeft="70,414" />
+          Size="206,42"
+          Id="Package\ETL_DIM_EMPLEADO\TRASNFORM_DD_MM_STR"
+          TopLeft="50,186" />
         <NodeLayout
           Size="185,42"
           Id="Package\ETL_DIM_EMPLEADO\CREATE_DESC_FECHA"
@@ -14960,7 +15041,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -14982,7 +15065,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -15004,7 +15089,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -15026,7 +15113,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -15048,7 +15137,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -15094,7 +15185,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -15116,7 +15209,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -15138,7 +15233,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -15160,7 +15257,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -15182,7 +15281,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -15204,7 +15305,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -15278,41 +15381,41 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
       <GraphLayout
         Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="133,42"
-          Id="Package\ETL_DIM_PRODUCTO\PRODUCTO"
-          TopLeft="25,100" />
-        <NodeLayout
-          Size="245,42"
-          Id="Package\ETL_DIM_PRODUCTO\VERIFICAR_NO_SOBREESCRITURA"
-          TopLeft="713,176" />
-        <NodeLayout
-          Size="189,42"
-          Id="Package\ETL_DIM_PRODUCTO\ORDEN_PRE_MERGE_2"
-          TopLeft="478,101" />
+          Size="218,42"
+          Id="Package\ETL_DIM_PRODUCTO\CONVERSION_TO_STRING_2"
+          TopLeft="209,100" />
         <NodeLayout
           Size="211,42"
           Id="Package\ETL_DIM_PRODUCTO\LOAD_TO_DIM_PRODUCTO"
           TopLeft="736,275" />
         <NodeLayout
-          Size="218,42"
-          Id="Package\ETL_DIM_PRODUCTO\CONVERSION_TO_STRING_2"
-          TopLeft="209,100" />
+          Size="233,42"
+          Id="Package\ETL_DIM_PRODUCTO\UNION_CATEGORIA_EMPLEADO"
+          TopLeft="716,64" />
+        <NodeLayout
+          Size="245,42"
+          Id="Package\ETL_DIM_PRODUCTO\VERIFICAR_NO_SOBREESCRITURA"
+          TopLeft="713,176" />
+        <NodeLayout
+          Size="133,42"
+          Id="Package\ETL_DIM_PRODUCTO\PRODUCTO"
+          TopLeft="25,100" />
         <NodeLayout
           Size="206,42"
           Id="Package\ETL_DIM_PRODUCTO\CONVERSION_TO_STRING"
           TopLeft="212,27" />
         <NodeLayout
-          Size="136,42"
-          Id="Package\ETL_DIM_PRODUCTO\CATEGORIA"
-          TopLeft="24,28" />
-        <NodeLayout
           Size="178,42"
           Id="Package\ETL_DIM_PRODUCTO\ORDEN_PRE_MERGE"
           TopLeft="478,27" />
         <NodeLayout
-          Size="233,42"
-          Id="Package\ETL_DIM_PRODUCTO\UNION_CATEGORIA_EMPLEADO"
-          TopLeft="716,64" />
+          Size="189,42"
+          Id="Package\ETL_DIM_PRODUCTO\ORDEN_PRE_MERGE_2"
+          TopLeft="478,101" />
+        <NodeLayout
+          Size="136,42"
+          Id="Package\ETL_DIM_PRODUCTO\CATEGORIA"
+          TopLeft="24,28" />
         <EdgeLayout
           Id="Package\ETL_DIM_PRODUCTO.Paths[Data Conversion Output]"
           TopLeft="427,121.5">
@@ -15332,7 +15435,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -15366,7 +15471,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -15400,7 +15507,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -15422,7 +15531,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -15444,7 +15555,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -15466,7 +15579,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -15512,14 +15627,16 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\ETL_DIM_PRODUCTO\PRODUCTO">
+    design-time-name="Package\ETL_DIM_PRODUCTO\LOAD_TO_DIM_PRODUCTO">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -15555,7 +15672,7 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\ETL_DIM_PRODUCTO\LOAD_TO_DIM_PRODUCTO">
+    design-time-name="Package\ETL_DIM_PRODUCTO\PRODUCTO">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -15584,7 +15701,7 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
     design-time-name="Package\ETL_DIM_SUCURSAL">
     <LayoutInfo>
       <GraphLayout
-        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="206,42"
           Id="Package\ETL_DIM_SUCURSAL\LOAD_TO_Dim_SUCURSAL"
@@ -15648,7 +15765,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -15682,7 +15801,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -15716,7 +15837,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -15750,7 +15873,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -15772,7 +15897,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -15806,7 +15933,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -15840,7 +15969,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -15941,7 +16072,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -15963,7 +16096,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -16009,7 +16144,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -16031,7 +16168,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -16053,7 +16192,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -16075,7 +16216,9 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -16295,28 +16438,6 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
         </EdgeLayout>
         <EdgeLayout
           Id="Package\ETL_FACT_VENTA.Paths[Sort Output10]"
-          TopLeft="572,516.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="257,0"
-              Start="0,0"
-              End="249.5,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="249.5,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\ETL_FACT_VENTA.Paths[Sort Output9]"
           TopLeft="933.5,953">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -16338,7 +16459,7 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\ETL_FACT_VENTA.Paths[Sort Output8]"
+          Id="Package\ETL_FACT_VENTA.Paths[Sort Output9]"
           TopLeft="930.25,625">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -16360,7 +16481,7 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\ETL_FACT_VENTA.Paths[Sort Output7]"
+          Id="Package\ETL_FACT_VENTA.Paths[Sort Output8]"
           TopLeft="564,691.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -16382,7 +16503,7 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\ETL_FACT_VENTA.Paths[Sort Output6]"
+          Id="Package\ETL_FACT_VENTA.Paths[Sort Output7]"
           TopLeft="593,1183.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -16404,7 +16525,7 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\ETL_FACT_VENTA.Paths[Sort Output5]"
+          Id="Package\ETL_FACT_VENTA.Paths[Sort Output6]"
           TopLeft="930,799">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -16426,7 +16547,7 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\ETL_FACT_VENTA.Paths[Sort Output4]"
+          Id="Package\ETL_FACT_VENTA.Paths[Sort Output5]"
           TopLeft="577,857.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -16448,7 +16569,7 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\ETL_FACT_VENTA.Paths[Sort Output3]"
+          Id="Package\ETL_FACT_VENTA.Paths[Sort Output4]"
           TopLeft="936.25,457">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -16470,7 +16591,7 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\ETL_FACT_VENTA.Paths[Sort Output2]"
+          Id="Package\ETL_FACT_VENTA.Paths[Sort Output3]"
           TopLeft="573,1014">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -16492,7 +16613,7 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\ETL_FACT_VENTA.Paths[Sort Output1]"
+          Id="Package\ETL_FACT_VENTA.Paths[Sort Output2]"
           TopLeft="765,355.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -16514,7 +16635,7 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\ETL_FACT_VENTA.Paths[Sort Output]"
+          Id="Package\ETL_FACT_VENTA.Paths[Sort Output1]"
           TopLeft="938.75,1115">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -16536,73 +16657,29 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
+          Id="Package\ETL_FACT_VENTA.Paths[Sort Output]"
+          TopLeft="572,516.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="257,0"
+              Start="0,0"
+              End="249.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="249.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
           Id="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output6]"
-          TopLeft="252,87.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="42,0"
-              Start="0,0"
-              End="34.5,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="34.5,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output5]"
-          TopLeft="264,1184.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="133,0"
-              Start="0,0"
-              End="125.5,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="125.5,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output4]"
-          TopLeft="279,860.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="72,0"
-              Start="0,0"
-              End="64.5,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="64.5,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output3]"
           TopLeft="295,354">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -16624,51 +16701,7 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output2]"
-          TopLeft="280,1017">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="63,0"
-              Start="0,0"
-              End="55.5,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="55.5,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output1]"
-          TopLeft="289,517.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="55,0"
-              Start="0,0"
-              End="47.5,0">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="47.5,0" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output]"
+          Id="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output5]"
           TopLeft="282,692">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -16690,73 +16723,117 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
+          Id="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output4]"
+          TopLeft="289,517.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="55,0"
+              Start="0,0"
+              End="47.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="47.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output3]"
+          TopLeft="280,1017">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="63,0"
+              Start="0,0"
+              End="55.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="55.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output2]"
+          TopLeft="279,860.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="72,0"
+              Start="0,0"
+              End="64.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="64.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output1]"
+          TopLeft="252,87.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="42,0"
+              Start="0,0"
+              End="34.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="34.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\ETL_FACT_VENTA.Paths[OLE DB Source Output]"
+          TopLeft="264,1184.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="133,0"
+              Start="0,0"
+              End="125.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="125.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
           Id="Package\ETL_FACT_VENTA.Paths[Merge Join Output5]"
-          TopLeft="937.5,1203">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,46"
-              Start="0,0"
-              End="0,38.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,38.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\ETL_FACT_VENTA.Paths[Merge Join Output4]"
-          TopLeft="938,1032">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,41"
-              Start="0,0"
-              End="0,33.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,33.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\ETL_FACT_VENTA.Paths[Merge Join Output3]"
-          TopLeft="939.25,376">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,39"
-              Start="0,0"
-              End="0,31.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,31.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\ETL_FACT_VENTA.Paths[Merge Join Output2]"
           TopLeft="931.25,712">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -16778,7 +16855,7 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\ETL_FACT_VENTA.Paths[Merge Join Output1]"
+          Id="Package\ETL_FACT_VENTA.Paths[Merge Join Output4]"
           TopLeft="932,536">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -16800,7 +16877,7 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\ETL_FACT_VENTA.Paths[Merge Join Output]"
+          Id="Package\ETL_FACT_VENTA.Paths[Merge Join Output3]"
           TopLeft="928.5,876">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -16813,6 +16890,72 @@ where [refTable].[producto_id] = ? and [refTable].[empleado_id] = ? and [refTabl
                   Capacity="5">
                   <mssgle:LineSegment
                     End="0,27.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\ETL_FACT_VENTA.Paths[Merge Join Output2]"
+          TopLeft="939.25,376">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,39"
+              Start="0,0"
+              End="0,31.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,31.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\ETL_FACT_VENTA.Paths[Merge Join Output1]"
+          TopLeft="938,1032">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,41"
+              Start="0,0"
+              End="0,33.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,33.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\ETL_FACT_VENTA.Paths[Merge Join Output]"
+          TopLeft="937.5,1203">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,46"
+              Start="0,0"
+              End="0,38.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,38.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
